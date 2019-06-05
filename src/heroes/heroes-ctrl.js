@@ -1,4 +1,7 @@
 const db = require("../../db-models");
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 exports.doLogin = (req, res) => {
     console.log("===> doLogin: ", req.body);
@@ -10,14 +13,14 @@ exports.doLogin = (req, res) => {
     })
         .then(response => {
             if (response) {
-                res.status(200).send({ status: 200, response: response });
+                // const token = jwt.sign({ username: req.body.username }, JWT_SECRET_KEY, { expiresIn: "20m" });
+                const token = jwt.sign({ username: req.body.username }, JWT_SECRET_KEY);
+                res.status(200).send({ status: 200, token, response: response });
             } else {
-                // res.send({ status: 401, message: "Hero not found." });
                 throw new Error("Hero not found. Incorrect username or password.");
             }
         })
         .catch(error => {
-            console.log(error);
             res.status(400).send({ status: 400, errorMessage: error.message });
         });
 };
