@@ -26,7 +26,7 @@ exports.doLogin = (req, res) => {
 };
 
 exports.getHeroList = (req, res) => {
-    console.log("===> getHeroList: ", db.Hero);
+    console.log("\n===> getHeroList: ", db.Hero);
     db.Hero.findAll()
         .then(response => {
             res.send(response);
